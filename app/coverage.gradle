@@ -1,0 +1,125 @@
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion "0.7.1.201405082137"
+}
+
+ext {
+    limits = [
+            'instruction': 10,
+            'branch'     : 10,
+            'line'       : 10,
+            'complexity' : 10,
+            'method'     : 10,
+            'class'      : 10
+    ]
+}
+
+def coverageSourceDirs = [
+        'src/main/java'
+]
+
+def excludeClassFilter = [
+        '**/R.class',
+        '**/R$*.class',
+        '**/BuildConfig.*',
+        '**/Manifest*.*',
+        '**/*Test*.*',
+        'android/**/*.*',
+        '**/*InjectAdapter*.*',
+        '**/*StaticInjection*.*',
+        '**/*ModuleAdapter*.*',
+        '**/*InjectionModule*.*'
+]
+
+def classTree = fileTree(
+        dir: "$buildDir/intermediates/classes/debug",
+        excludes: excludeClassFilter
+)
+
+task coverage(type: JacocoReport, dependsOn: "testDebugUnitTest") {
+    description = "Generate Jacoco coverage reports after running tests."
+    group = "Reporting"
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    classDirectories = files([classTree])
+    sourceDirectories = files(coverageSourceDirs)
+    executionData = fileTree(
+            dir: "$buildDir/jacoco",
+            includes: ['**/*.exec', '**/*.ec']
+    )
+
+    // Bit hacky but fixes https://code.google.com/p/android/issues/detail?id=69174.
+    // We iterate through the compiled .class tree and rename $$ to $.
+    doFirst {
+        rename$$to$()
+    }
+
+    doLast {
+        checkCoverage()
+    }
+}
+
+void rename$$to$() {
+    new File("$buildDir/intermediates/classes/").eachFileRecurse { file ->
+        if (file.name.contains('$$')) {
+            file.renameTo(file.path.replace('$$', '$'))
+        }
+    }
+}
+
+void checkCoverage() {
+    def report = file("${jacoco.reportsDir}/coverage/coverage.xml")
+    logger.lifecycle("Checking coverage results: ${report}")
+
+    def htmlReport = file("${jacoco.reportsDir}/coverage/html/index.html")
+    logger.lifecycle("HTML report output: ${htmlReport}")
+
+    def parser = new XmlParser()
+    parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+    parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
+    def results = parser.parse(report)
+
+    def percentage = {
+        def covered = it.'@covered' as Double
+        def missed = it.'@missed' as Double
+        ((covered / (covered + missed)) * 100).round(2)
+    }
+
+    def counters = results.counter
+    def metrics = [:]
+    metrics << [
+            'instruction': percentage(counters.find { it.'@type'.equals('INSTRUCTION') }),
+            'branch'     : percentage(counters.find { it.'@type'.equals('BRANCH') }),
+            'line'       : percentage(counters.find { it.'@type'.equals('LINE') }),
+            'complexity' : percentage(counters.find { it.'@type'.equals('COMPLEXITY') }),
+            'method'     : percentage(counters.find { it.'@type'.equals('METHOD') }),
+            'class'      : percentage(counters.find { it.'@type'.equals('CLASS') })
+    ]
+
+    def failures = []
+    logger.quiet("---------------------------------------------------------------")
+    metrics.each {
+        def limit = limits[it.key]
+        logger.quiet("- ${it.key} coverage rate is: ${it.value}%")
+        if (it.value < limit) {
+            failures.add("- ${it.key} coverage rate is: ${it.value}%, minimum is ${limit}%")
+        }
+    }
+    logger.quiet("---------------------------------------------------------------")
+
+    if (failures) {
+        logger.quiet("------------------ Code Coverage Failed -----------------------")
+        failures.each {
+            logger.quiet(it)
+        }
+        logger.quiet("---------------------------------------------------------------")
+        throw new GradleException("Code coverage failed")
+    } else {
+        logger.quiet("Passed Code Coverage Checks")
+    }
+}
