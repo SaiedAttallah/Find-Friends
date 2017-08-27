@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="find_friends_error">فشل في إيجاد اﻷصدقاء</string>
+    <string name="find_friends_error_msg">Error ocurred while retrevieng friends</string>
+</resources>
