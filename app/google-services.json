@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "123160064047",
+    "firebase_url": "https://find-friends-1503867950354.firebaseio.com",
+    "project_id": "find-friends-1503867950354",
+    "storage_bucket": "find-friends-1503867950354.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123160064047:android:125d892dbf2038b6",
+        "android_client_info": {
+          "package_name": "com.cosmos.saiedattallah.findfriends"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123160064047-o22e12fgepd4bg1s0r7uhomqnf6k7te2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cosmos.saiedattallah.findfriends",
+            "certificate_hash": "a4642b1fa231d114fc148a45045bc0fd4445191b"
+          }
+        },
+        {
+          "client_id": "123160064047-69bvk0g566efq4q7ito0fh1c3piha94f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1mANUM1c6QxeGvKCiVEf_ZkmvEkXCRUo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "123160064047-69bvk0g566efq4q7ito0fh1c3piha94f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

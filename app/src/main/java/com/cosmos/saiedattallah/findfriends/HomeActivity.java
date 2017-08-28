@@ -19,13 +19,13 @@ import com.cosmos.saiedattallah.findfriends.models.Friend;
 import com.cosmos.saiedattallah.findfriends.providers.FriendsProvider;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -37,7 +37,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class HomeActivity extends BaseActivity implements OnMapReadyCallback, FriendsProvider.OnRetrieveFriendsListListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class HomeActivity extends BaseActivity implements OnMapReadyCallback, FriendsProvider.OnRetrieveFriendsListListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     @Inject
     FriendsProvider friendsProvider;
 
@@ -50,6 +50,7 @@ public class HomeActivity extends BaseActivity implements OnMapReadyCallback, Fr
     LocationRequest locationRequest;
     GoogleApiClient googleApiClient;
     LatLng userLocationLatLng;
+    Marker userLocationMarker;
     HashMap<Integer, Marker> markerHashMap;
 
     ArrayList<Friend> friendsList;
@@ -58,9 +59,6 @@ public class HomeActivity extends BaseActivity implements OnMapReadyCallback, Fr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -205,8 +203,8 @@ public class HomeActivity extends BaseActivity implements OnMapReadyCallback, Fr
                 userLocationLatLng = new LatLng(userLastLocation.getLatitude(), userLastLocation.getLongitude());
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(userLocationLatLng);
-                markerOptions.title(getString(R.string.current_location));
-                currLocationMarker = googleMap.addMarker(markerOptions);
+//                markerOptions.title(getString(R.string.current_location));
+                userLocationMarker = googleMap.addMarker(markerOptions);
 
                 //zoom to current position:
                 CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -233,6 +231,11 @@ public class HomeActivity extends BaseActivity implements OnMapReadyCallback, Fr
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
 
     }
 }

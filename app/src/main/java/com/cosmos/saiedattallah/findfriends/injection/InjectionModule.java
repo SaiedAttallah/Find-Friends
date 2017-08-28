@@ -3,6 +3,8 @@ package com.cosmos.saiedattallah.findfriends.injection;
 import android.content.Context;
 
 import com.cosmos.saiedattallah.findfriends.App;
+import com.cosmos.saiedattallah.findfriends.HomeActivity;
+import com.cosmos.saiedattallah.findfriends.providers.FriendsProvider;
 import com.cosmos.saiedattallah.findfriends.rest.WebApiInterface;
 
 import java.util.concurrent.TimeUnit;
@@ -20,7 +22,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
                 App.class,
                 OkHttpClient.class,
                 Retrofit.class,
-                WebApiInterface.class
+                WebApiInterface.class,
+                HomeActivity.class,
+                FriendsProvider.class
         },
         library = true
 )
@@ -51,7 +55,7 @@ public class InjectionModule {
     @Singleton
     public Retrofit provideRetrofit(OkHttpClient okHttpClient) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://stepbystepsoftware.ddns.net:8020/")
+                .baseUrl("https://www.digi-worx.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();
@@ -62,5 +66,17 @@ public class InjectionModule {
     @Singleton
     public WebApiInterface provideWebApiInterface(Retrofit retrofit) {
         return retrofit.create(WebApiInterface.class);
+    }
+
+    @Provides
+    @Singleton
+    HomeActivity provideHomeActivity() {
+        return new HomeActivity();
+    }
+
+    @Provides
+    @Singleton
+    FriendsProvider provideFriendsProvider() {
+        return new FriendsProvider();
     }
 }

@@ -27,6 +27,7 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:design:26.0.0-alpha1'
     compile 'com.squareup.dagger:dagger-compiler:1.2.+'
     compile 'com.squareup.dagger:dagger:1.2.+'
     compile 'com.android.support:multidex:1.0.1'
@@ -49,3 +50,5 @@ class PipelineTask extends DefaultTask {
         println("Pipeline complete")
     }
 }
+
+apply plugin: 'com.google.gms.google-services'

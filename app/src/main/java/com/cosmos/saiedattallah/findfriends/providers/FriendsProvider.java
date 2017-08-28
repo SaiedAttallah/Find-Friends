@@ -1,6 +1,7 @@
 package com.cosmos.saiedattallah.findfriends.providers;
 
 import com.cosmos.saiedattallah.findfriends.R;
+import com.cosmos.saiedattallah.findfriends.injection.BaseComponent;
 import com.cosmos.saiedattallah.findfriends.models.Friend;
 import com.cosmos.saiedattallah.findfriends.rest.ServerResponse;
 import com.cosmos.saiedattallah.findfriends.rest.WebApiInterface;
@@ -13,7 +14,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FriendsProvider {
+public class FriendsProvider extends BaseComponent {
     @Inject
     protected WebApiInterface webApiInterface;
 
