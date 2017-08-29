@@ -24,6 +24,7 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
     private Context getContext() {
         return mContext;
     }
+
     private static OnItemClickListener listener;
 
     @Override
@@ -58,10 +59,12 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
     public interface OnItemClickListener {
         void onItemClick(View itemView, int position);
     }
+
     // Define the method that allows the parent activity or fragment to define the listener
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvFirstName;
 

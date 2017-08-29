@@ -9,11 +9,14 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
+import com.cosmos.saiedattallah.findfriends.adapters.FriendsListAdapter;
 import com.cosmos.saiedattallah.findfriends.injection.BaseActivity;
 import com.cosmos.saiedattallah.findfriends.models.Friend;
 import com.cosmos.saiedattallah.findfriends.providers.FriendsProvider;
@@ -53,7 +56,9 @@ public class HomeActivity extends BaseActivity implements OnMapReadyCallback, Fr
     Marker userLocationMarker;
     HashMap<Integer, Marker> markerHashMap;
 
+    FriendsListAdapter friendsListAdapter;
     ArrayList<Friend> friendsList;
+    RecyclerView rvFriends;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +75,8 @@ public class HomeActivity extends BaseActivity implements OnMapReadyCallback, Fr
         friendsList = new ArrayList<>();
         friendsProvider.setOnRetrieveFriendsListListener(this);
         friendsProvider.retrieveFriendsList();
+
+        rvFriends = (RecyclerView) findViewById(R.id.rv_friends);
     }
 
     @Override
@@ -103,7 +110,19 @@ public class HomeActivity extends BaseActivity implements OnMapReadyCallback, Fr
 
     @Override
     public void onFriendsListRetrieved(List<Friend> friendsList) {
+        friendsListAdapter = new FriendsListAdapter(this, friendsList);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rvFriends.setLayoutManager(layoutManager);
 
+        // Attach the adapter to the recycler view to populate items
+        rvFriends.setAdapter(friendsListAdapter);
+        // Set layout manager to position the items
+        friendsListAdapter.setOnItemClickListener(new FriendsListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View itemView, int position) {
+
+            }
+        });
     }
 
     @Override

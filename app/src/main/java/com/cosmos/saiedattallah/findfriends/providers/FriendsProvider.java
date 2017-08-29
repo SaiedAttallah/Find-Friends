@@ -60,7 +60,7 @@ public class FriendsProvider extends BaseComponent {
 
         if (response.isSuccessful()) {
             serverResponse = response.body();
-            if (serverResponse.getStatus() == ServerResponse.RESPONSE_STATUS_SUCCESS) {
+            if (serverResponse.getStatus() == 0) {
                 this.friendsList = serverResponse.getFriends();
                 if (this.onRetrieveFriendsListListener != null) {
                     this.onRetrieveFriendsListListener.onFriendsListRetrieved(this.friendsList);
