@@ -2,4 +2,5 @@
     <string name="app_name">Find Friends</string>
     <string name="find_friends_error">Failed to find friends</string>
     <string name="find_friends_error_msg">Error ocurred while retrevieng friends</string>
+    <string name="friends_list">Friends List</string>
 </resources>

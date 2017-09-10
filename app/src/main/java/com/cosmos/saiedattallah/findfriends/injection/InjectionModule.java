@@ -3,6 +3,7 @@ package com.cosmos.saiedattallah.findfriends.injection;
 import android.content.Context;
 
 import com.cosmos.saiedattallah.findfriends.App;
+import com.cosmos.saiedattallah.findfriends.FriendsListActivity;
 import com.cosmos.saiedattallah.findfriends.HomeActivity;
 import com.cosmos.saiedattallah.findfriends.providers.FriendsProvider;
 import com.cosmos.saiedattallah.findfriends.rest.WebApiInterface;
@@ -24,6 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
                 Retrofit.class,
                 WebApiInterface.class,
                 HomeActivity.class,
+                FriendsListActivity.class,
                 FriendsProvider.class
         },
         library = true
@@ -72,6 +74,12 @@ public class InjectionModule {
     @Singleton
     HomeActivity provideHomeActivity() {
         return new HomeActivity();
+    }
+
+    @Provides
+    @Singleton
+    FriendsListActivity provideFriendsListActivity() {
+        return new FriendsListActivity();
     }
 
     @Provides
